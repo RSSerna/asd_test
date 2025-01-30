@@ -3,13 +3,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../features/cleanfeature/data/datasource/clean_remote_data_source.dart';
-import '../../features/cleanfeature/data/repositories/clean_repository_impl.dart';
-import '../../features/cleanfeature/domain/repositories/clean_repository.dart';
-import '../../features/cleanfeature/domain/usecase/clean_noparams_usecase.dart';
-import '../../features/cleanfeature/domain/usecase/clean_params_usecase.dart';
-import '../../features/cleanfeature/presentation/bloc/password_manager/clean_bloc.dart';
 import '../../features/language/bloc/language_bloc.dart';
+import '../../features/movies/data/datasource/clean_remote_data_source.dart';
+import '../../features/movies/data/repositories/clean_repository_impl.dart';
+import '../../features/movies/domain/repositories/clean_repository.dart';
+import '../../features/movies/domain/usecase/clean_params_usecase.dart';
+import '../../features/movies/domain/usecase/get_popular_movies_usecase.dart';
 import '../http/custom_http_client.dart';
 import '../http/dio_client_mix.dart';
 import '../interceptors/interceptor_manager.dart';
@@ -33,12 +32,12 @@ class InjectionContainerImpl implements InjectionContainer {
         () => CleanBloc(changePassword: sl(), restorePassword: sl()));
 
     //Usecases
-    sl.registerLazySingleton(() => CleanNoParamsUseCase(repository: sl()));
+    sl.registerLazySingleton(() => GetPopularMoviesUseCase(repository: sl()));
     sl.registerLazySingleton(() => CleanParamsUseCase(repository: sl()));
 
     //Repository
-    sl.registerLazySingleton<CleanRepository>(
-      () => CleanRepositoryImpl(
+    sl.registerLazySingleton<MovieRepository>(
+      () => MovieRepositoryImpl(
           cleanRemoteDataSource: sl(), cleanLocalDataSource: sl()),
     );
 

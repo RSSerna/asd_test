@@ -1,9 +1,7 @@
 class RouterPaths {
-  //SignIn
-  static const login = "/login";
-
-  //Register
-  static const register = "/register";
+  //Movies
+  static const movies = "/movies";
+  static const movieInfo = "/movieinfo";
 
   //Language
   static const language = "/language";

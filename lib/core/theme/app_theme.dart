@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'app_typography.dart';
 
 class AppTheme {
+  static ThemeData themeData = ligthTheme;
+
   static final ThemeData ligthTheme = ThemeData(
     useMaterial3: true,
     colorScheme: lightColorScheme,
