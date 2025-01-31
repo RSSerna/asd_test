@@ -4,16 +4,36 @@ import 'package:flutter/foundation.dart';
 
 import '../../../../core/helpers/debouncer.dart';
 import '../../domain/entities/cast_entity.dart';
+import '../../domain/entities/get_movie_cast_param.dart';
+import '../../domain/entities/get_popular_movie_param.dart';
 import '../../domain/entities/movie.dart';
-import '../../domain/entities/movie_entity.dart';
+import '../../domain/entities/search_movie_param.dart';
+import '../../domain/usecase/get_movie_cast_usecase.dart';
+import '../../domain/usecase/get_popular_movies_usecase.dart';
+import '../../domain/usecase/search_movie_usecase.dart';
 
 class MovieProvider extends ChangeNotifier {
-  final String _baseURL = 'api.themoviedb.org';
-  final String _apiKey = 'd2b9fff2c64df549c7232718ac2b77e3';
-  final String _language = 'es-ES';
+  MovieProvider(
+      {required GetMovieCastUsecase getMovieCastUsecase,
+      required GetPopularMoviesUseCase getPopularMoviesUseCase,
+      required SearchMovieUsecase searchMovieUsecase})
+      : _getMovieCastUsecase = getMovieCastUsecase,
+        _getPopularMoviesUseCase = getPopularMoviesUseCase,
+        _searchMovieUsecase = searchMovieUsecase {
+    getPopularMovies();
+  }
 
+  // ---------------------------------------------------------------------------
+  // Use cases
+  // ---------------------------------------------------------------------------
+  final GetMovieCastUsecase _getMovieCastUsecase;
+  final GetPopularMoviesUseCase _getPopularMoviesUseCase;
+  final SearchMovieUsecase _searchMovieUsecase;
+
+  // ---------------------------------------------------------------------------
+  // Properties
+  // ---------------------------------------------------------------------------
   List<Movie> popularMovie = [];
-
   Map<int, List<Cast>> movieCast = {};
   int _popularPage = 0;
 
@@ -26,26 +46,17 @@ class MovieProvider extends ChangeNotifier {
 
   Stream<List<Movie>> get suggestionStream => _suggestionStremController.stream;
 
-  MovieProvider() {
-    // print('MovieProvider Inicializado');
-    getPopularMovies();
-  }
-
-  Future<String> _getJsonData(String endpoint, [int page = 1]) async {
-    var url = Uri.https(_baseURL, endpoint,
-        {'api_key': _apiKey, 'language': _language, 'page': '$page'});
-
-    final response = await http.get(url);
-    return response.body;
-  }
-
   void getPopularMovies() async {
     _popularPage++;
-    final jsonData = await _getJsonData('/3/movie/popular', _popularPage);
-
-    final popularResponse = PopularResponse.fromJson(jsonData);
-
-    popularMovie = [...popularMovie, ...popularResponse.results];
+    final failureOrAccepted = await _getPopularMoviesUseCase(
+        GetPopularMoviesParam(page: _popularPage));
+    failureOrAccepted.fold((error) {}, (accepted) {
+      var newPopularMovie = accepted
+          .map(
+              (movie) => Movie(heroID: 'popular-${movie.id}', movieData: movie))
+          .toList();
+      popularMovie = [...popularMovie, ...newPopularMovie];
+    });
 
     notifyListeners();
   }
@@ -54,24 +65,28 @@ class MovieProvider extends ChangeNotifier {
     if (movieCast.containsKey(id)) {
       return movieCast[id]!;
     }
-    // print('Info Cast');
-    final jsonData = await _getJsonData('/3/movie/$id/credits');
+    final failureOrAccepted =
+        await _getMovieCastUsecase(GetMovieCastParam(id: id));
 
-    final creditsResponse = CreditsResponse.fromJson(jsonData);
-
-    movieCast[id] = creditsResponse.cast;
-    return creditsResponse.cast;
+    failureOrAccepted.fold((error) {}, (accepted) {
+      movieCast[id] = accepted;
+      return accepted;
+    });
+    return [];
   }
 
   Future<List<Movie>> searchMovie(String movie) async {
-    var url = Uri.https(_baseURL, '/3/search/movie',
-        {'api_key': _apiKey, 'language': _language, 'query': movie});
+    final failureOrAccepted =
+        await _searchMovieUsecase(SearchMovieParam(movie: movie));
 
-    final response = await http.get(url);
+    failureOrAccepted.fold((error) {}, (accepted) {
+      var searchedMovies = accepted
+          .map((movie) => Movie(heroID: 'search-${movie.id}', movieData: movie))
+          .toList();
+      return searchedMovies;
+    });
 
-    final searchMovieResponse = SearchMovieResponse.fromJson(response.body);
-
-    return searchMovieResponse.results;
+    return [];
   }
 
   void getSuggestionByQuery(String query) {

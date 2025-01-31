@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 
-import 'blocs.dart';
 import 'core/di/injection_container.dart';
 import 'core/l10n/l10n.dart';
 import 'core/router/app_routes.dart';
 import 'core/theme/app_theme.dart';
+import 'features/language/bloc/language_bloc.dart';
+import 'features/movies/presentation/providers/movies_provider.dart';
 
 class AppState extends StatelessWidget {
   final InjectionContainerImpl injectionContainerImpl;
@@ -21,11 +23,16 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<CleanBloc>(
-          create: (context) => injectionContainerImpl.sl<CleanBloc>(),
+        BlocProvider<LanguageBloc>(
+          create: (context) => injectionContainerImpl.sl<LanguageBloc>(),
         ),
       ],
-      child: const MainApp(),
+      child: MultiProvider(providers: [
+        ChangeNotifierProvider(
+          create: (_) => injectionContainerImpl.sl<MovieProvider>(),
+          lazy: false,
+        )
+      ], child: const MainApp()),
     );
   }
 }

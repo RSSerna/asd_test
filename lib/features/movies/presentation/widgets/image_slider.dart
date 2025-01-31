@@ -34,10 +34,10 @@ class _ImageSliderWidgetState extends State<ImageSliderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    // final size = MediaQuery.of(context).size;
     return SizedBox(
         width: double.infinity,
-        height: size.height * 0.35,
+        height: double.infinity,
         // color: Colors.red,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,7 +88,6 @@ class _ImageInSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     // print(title);
     String heroID = 'slider-$title-${movie.movieData.id}';
-    movie.heroID = heroID;
     return Container(
       width: 120,
       height: 110,

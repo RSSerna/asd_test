@@ -8,8 +8,9 @@ import '../entities/movie_entity.dart';
 import '../entities/search_movie_param.dart';
 
 abstract class MovieRepository {
-  Future<Either<Failure, MovieEntity>> getPopularMovies(
+  Future<Either<Failure, List<MovieEntity>>> getPopularMovies(
       GetPopularMoviesParam param);
-  Future<Either<Failure, Cast>> getMovieCast(GetMovieCastParam param);
-  Future<Either<Failure, MovieEntity>> searchMovie(SearchMovieParam param);
+  Future<Either<Failure, List<Cast>>> getMovieCast(GetMovieCastParam param);
+  Future<Either<Failure, List<MovieEntity>>> searchMovie(
+      SearchMovieParam param);
 }

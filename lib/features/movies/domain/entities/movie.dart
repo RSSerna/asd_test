@@ -2,7 +2,7 @@ import 'package:asd_test/features/movies/domain/entities/movie_entity.dart';
 
 class Movie {
   final MovieEntity movieData;
-  String heroID;
+  final String heroID;
 
   Movie({
     required this.movieData,
