@@ -52,8 +52,11 @@ class DioClientMix with DioMixin implements Dio {
         queryParameters: queryParameters,
       );
     } on DioException catch (e) {
-      print(e.response);
-      return handleError(e);
+      print(e);
+      throw handleError(e);
+    } catch (e) {
+      print(e);
+      rethrow;
     }
   }
 
@@ -75,7 +78,7 @@ class DioClientMix with DioMixin implements Dio {
         queryParameters: queryParameters,
       );
     } on DioException catch (e) {
-      return handleError(e);
+      throw handleError(e);
     }
   }
 
@@ -95,7 +98,7 @@ class DioClientMix with DioMixin implements Dio {
         queryParameters: queryParameters,
       );
     } on DioException catch (e) {
-      return handleError(e);
+      throw handleError(e);
     }
   }
 
@@ -117,18 +120,24 @@ class DioClientMix with DioMixin implements Dio {
         queryParameters: queryParameters,
       );
     } on DioException catch (e) {
-      return handleError(e);
+      throw handleError(e);
     }
   }
 
-  handleError(DioException e) {
+  CustomHTTPException handleError(DioException e) {
     if (e.response != null) {
-      throw CustomHTTPException(
+      return CustomHTTPException(
           data: e.response!.data,
           headers: e.requestOptions.headers,
           path: e.requestOptions.path,
           code: e.response!.statusCode!,
           message: e.response!.statusMessage!);
+    } else {
+      return CustomHTTPException(
+          data: e,
+          message: 'Unkown error',
+          path: e.requestOptions.path,
+          code: 0);
     }
   }
 }

@@ -73,19 +73,19 @@ class MovieEntity extends Equatable {
   Map<String, dynamic> toMap() {
     return {
       'adult': adult,
-      'backdropPath': backdropPath,
-      'genreIds': genreIds,
+      'backdrop_path': backdropPath,
+      'genre_ids': genreIds,
       'id': id,
-      'originalLanguage': originalLanguage,
-      'originalTitle': originalTitle,
+      'original_language': originalLanguage,
+      'original_title': originalTitle,
       'overview': overview,
       'popularity': popularity,
-      'posterPath': posterPath,
-      'releaseDate': releaseDate,
+      'poster_path': posterPath,
+      'release_date': releaseDate,
       'title': title,
       'video': video,
-      'voteAverage': voteAverage,
-      'voteCount': voteCount,
+      'vote_average': voteAverage,
+      'vote_count': voteCount,
     };
   }
 
@@ -133,19 +133,19 @@ class MovieEntity extends Equatable {
   factory MovieEntity.fromMap(Map<String, dynamic> map) {
     return MovieEntity(
       adult: map['adult'] ?? false,
-      backdropPath: map['backdropPath'],
-      genreIds: List<int>.from(map['genreIds']),
+      backdropPath: map['backdrop_path'],
+      genreIds: List<int>.from(map['genre_ids']),
       id: map['id']?.toInt() ?? 0,
-      originalLanguage: map['originalLanguage'] ?? '',
-      originalTitle: map['originalTitle'] ?? '',
+      originalLanguage: map['original_language'] ?? '',
+      originalTitle: map['original_title'] ?? '',
       overview: map['overview'] ?? '',
       popularity: map['popularity']?.toDouble() ?? 0.0,
-      posterPath: map['posterPath'],
-      releaseDate: map['releaseDate'],
+      posterPath: map['poster_path'],
+      releaseDate: map['release_date'],
       title: map['title'] ?? '',
       video: map['video'] ?? false,
-      voteAverage: map['voteAverage']?.toDouble() ?? 0.0,
-      voteCount: map['voteCount']?.toInt() ?? 0,
+      voteAverage: map['vote_average']?.toDouble() ?? 0.0,
+      voteCount: map['vote_count']?.toInt() ?? 0,
     );
   }
 

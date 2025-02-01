@@ -1,22 +1,18 @@
-import 'package:asd_test/features/movies/domain/entities/movie.dart';
-import 'package:asd_test/features/movies/presentation/providers/movies_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/theme/app_theme.dart';
 import '../../domain/entities/cast_entity.dart';
+import '../../domain/entities/movie.dart';
+import '../providers/movies_provider.dart';
 
 class DetailScreen extends StatelessWidget {
-  const DetailScreen({super.key});
+  const DetailScreen({super.key, required this.movie});
+
+  final Movie movie;
 
   @override
   Widget build(BuildContext context) {
-    final arguments =
-        ModalRoute.of(context)!.settings.arguments as List<Object>;
-    final Movie movie = arguments[0] as Movie;
-    debugPrint(arguments[1].toString());
-    debugPrint(movie.heroID);
-
     return Scaffold(
         body: CustomScrollView(
       slivers: [
@@ -53,21 +49,21 @@ class _CastingCards extends StatelessWidget {
         future: movieProvider.getMovieCast(movieId),
         builder: (_, AsyncSnapshot<List<Cast>> snapshot) {
           if (!snapshot.hasData) {
-            return const SizedBox(
-              height: 180,
-              width: double.infinity,
-              child: CircularProgressIndicator(),
+            return Center(
+              child: const SizedBox.square(
+                dimension: 180,
+                child: CircularProgressIndicator(),
+              ),
             );
           }
           final List<Cast> cast = snapshot.data!;
           return Container(
             margin: const EdgeInsets.only(bottom: 30),
             width: double.infinity,
-            height: 180,
-            // color: Colors.red,
+            height: 220,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 20,
+                itemCount: cast.length,
                 itemBuilder: (_, index) {
                   return Container(
                     width: 110,
@@ -133,32 +129,71 @@ class _PosterAndInfoMovie extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme2 = Theme.of(context).textTheme;
-    final size = MediaQuery.of(context).size;
 
     return Container(
       margin: const EdgeInsets.only(top: 20),
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        children: [
-          Hero(
-            tag: movie.heroID,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: FadeInImage(
-                placeholder: const AssetImage('assets/no-image.jpg'),
-                image: NetworkImage(movie.movieData.fullImagePoster),
-                // fit: BoxFit.cover,
-                height: 150,
-                // width: 200,
+      child: LayoutBuilder(builder: (context, constraints) {
+        if (constraints.maxWidth <= 500) {
+          return Column(
+            children: [
+              Hero(
+                tag: movie.heroID,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: FadeInImage(
+                    placeholder: const AssetImage('assets/no-image.jpg'),
+                    image: NetworkImage(movie.movieData.fullImagePoster),
+                    height: 150,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                movie.movieData.title,
+                style: textTheme2.bodyLarge,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+              ),
+              Text(
+                movie.movieData.originalTitle,
+                style: textTheme2.bodyMedium,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+              ),
+              Row(
+                children: [
+                  const Icon(Icons.star),
+                  Text(
+                    movie.movieData.voteAverage.toString(),
+                    style: textTheme2.bodySmall,
+                  )
+                ],
+              )
+            ],
+          );
+        }
+        return Row(
+          children: [
+            Hero(
+              tag: movie.heroID,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: FadeInImage(
+                  placeholder: const AssetImage('assets/no-image.jpg'),
+                  image: NetworkImage(movie.movieData.fullImagePoster),
+                  // fit: BoxFit.cover,
+                  height: 150,
+                  // width: 200,
+                ),
               ),
             ),
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: size.width - 220),
-            child: Column(
+            const SizedBox(
+              width: 20,
+            ),
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -183,10 +218,10 @@ class _PosterAndInfoMovie extends StatelessWidget {
                   ],
                 )
               ],
-            ),
-          )
-        ],
-      ),
+            )
+          ],
+        );
+      }),
     );
   }
 }
@@ -220,7 +255,7 @@ class _CustomSliverAB extends StatelessWidget {
         background: FadeInImage(
           placeholder: const AssetImage('assets/loading.gif'),
           image: NetworkImage(movie.movieData.fullBackdropPath),
-          fit: BoxFit.cover,
+          fit: BoxFit.contain,
         ),
       ),
     );

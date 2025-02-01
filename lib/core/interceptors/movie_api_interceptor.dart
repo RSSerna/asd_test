@@ -1,17 +1,24 @@
-import 'package:asd_test/core/constants/api.dart';
-import 'package:asd_test/core/constants/constants.dart';
-import 'package:asd_test/core/secure_storage/secure_storage.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-class OTPInterceptor extends Interceptor {
+import '../constants/api.dart';
+import '../secure_storage/secure_storage.dart';
+
+class MovieInterceptor extends Interceptor {
   final SecureStorage secureStorage;
 
-  OTPInterceptor({required this.secureStorage});
+  MovieInterceptor({required this.secureStorage}) {
+    print("MovieInterceptor");
+  }
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+  void onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
     debugPrint('REQUEST[${options.method}] => PATH: ${options.path}');
+    // final String apiKey = await secureStorage.read(key: Constants.apiToken);
+    options.queryParameters.addAll({
+      'api_key': API.apiKey,
+    });
     super.onRequest(options, handler);
   }
 
@@ -20,9 +27,6 @@ class OTPInterceptor extends Interceptor {
     debugPrint(
       'RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}',
     );
-    if (response.requestOptions.path == API.apiAuth) {
-      secureOTPTempToken(token: response.data["token"]);
-    }
     super.onResponse(response, handler);
   }
 
@@ -32,12 +36,5 @@ class OTPInterceptor extends Interceptor {
       'ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}',
     );
     super.onError(err, handler);
-  }
-
-  void secureOTPTempToken({required String token}) {
-    secureStorage.write(
-      key: Constants.securedOTPTempToken,
-      value: token,
-    );
   }
 }

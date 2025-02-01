@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/router/router_paths.dart';
 import '../../domain/entities/movie.dart';
 
 class ImageSliderWidget extends StatefulWidget {
@@ -23,7 +25,6 @@ class _ImageSliderWidgetState extends State<ImageSliderWidget> {
   @override
   void initState() {
     super.initState();
-
     scrollController.addListener(() {
       if (scrollController.position.pixels + 300 >=
           scrollController.position.maxScrollExtent) {
@@ -34,96 +35,130 @@ class _ImageSliderWidgetState extends State<ImageSliderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // final size = MediaQuery.of(context).size;
-    return SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        // color: Colors.red,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                widget.title,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+    return Expanded(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              widget.title,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            Expanded(
-              child: Scrollbar(
-                // radius: const Radius.circular(3),
-                thickness: 6,
-                thumbVisibility: true,
+          ),
+          Expanded(
+            child: Scrollbar(
+              thickness: 6,
+              thumbVisibility: true,
+              controller: scrollController,
+              child: ListView.builder(
                 controller: scrollController,
-                child: ListView.builder(
-                  controller: scrollController,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: widget.movies.length,
-                  itemBuilder: (_, index) {
-                    return _ImageInSlider(
-                      title: widget.title,
-                      movie: widget.movies[index],
-                    );
-                  },
-                ),
+                // scrollDirection: Axis.horizontal,
+                itemCount: widget.movies.length,
+                itemBuilder: (_, index) {
+                  return _MovieListTile(
+                    title: widget.title,
+                    movie: widget.movies[index],
+                  );
+                },
               ),
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 }
 
-class _ImageInSlider extends StatelessWidget {
+class _MovieListTile extends StatelessWidget {
   final Movie movie;
   final String title;
-  const _ImageInSlider({
+  const _MovieListTile({
     required this.movie,
     required this.title,
   });
 
   @override
   Widget build(BuildContext context) {
-    // print(title);
-    String heroID = 'slider-$title-${movie.movieData.id}';
-    return Container(
-      width: 120,
-      height: 110,
-      // color: Colors.green,
-      margin: const EdgeInsets.all(8),
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: () {
-              print('Enviar este $heroID');
-              Navigator.pushNamed(context, 'details',
-                  arguments: [movie, title]);
-            },
-            child: Hero(
-              tag: movie.heroID,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: FadeInImage(
-                  placeholder: const AssetImage('assets/no-image.jpg'),
-                  image: NetworkImage(movie.movieData.fullImagePoster),
-                  fit: BoxFit.cover,
-                  height: 200,
+    return GestureDetector(
+      onTap: () {
+        context.push(RouterPaths.movieInfo, extra: movie);
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: 10),
+        width: double.infinity,
+        color: Colors.blueGrey,
+        child: LayoutBuilder(builder: (context, constraints) {
+          if (constraints.maxWidth <= 500) {
+            return Column(
+              spacing: 5,
+              children: [
+                Hero(
+                  tag: movie.heroID,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: FadeInImage(
+                      placeholder: const AssetImage('assets/no-image.jpg'),
+                      image: NetworkImage(movie.movieData.fullImagePoster),
+                      fit: BoxFit.cover,
+                      height: 150,
+                      width: 100,
+                    ),
+                  ),
+                ),
+                Text(
+                  movie.movieData.title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  movie.movieData.originalTitle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            );
+          }
+          return Row(
+            spacing: 20,
+            children: [
+              Hero(
+                tag: movie.heroID,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: FadeInImage(
+                    placeholder: const AssetImage('assets/no-image.jpg'),
+                    image: NetworkImage(movie.movieData.fullImagePoster),
+                    fit: BoxFit.cover,
+                    height: 150,
+                    width: 100,
+                  ),
                 ),
               ),
-            ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Text(
-            movie.movieData.title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-          )
-        ],
+              Column(
+                spacing: 5,
+                children: [
+                  Text(
+                    movie.movieData.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    movie.movieData.originalTitle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              )
+            ],
+          );
+        }),
       ),
     );
   }

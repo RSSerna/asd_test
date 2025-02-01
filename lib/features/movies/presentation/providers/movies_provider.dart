@@ -65,17 +65,19 @@ class MovieProvider extends ChangeNotifier {
     if (movieCast.containsKey(id)) {
       return movieCast[id]!;
     }
+    List<Cast> cast = [];
     final failureOrAccepted =
         await _getMovieCastUsecase(GetMovieCastParam(id: id));
 
     failureOrAccepted.fold((error) {}, (accepted) {
       movieCast[id] = accepted;
-      return accepted;
+      cast = accepted;
     });
-    return [];
+    return cast;
   }
 
   Future<List<Movie>> searchMovie(String movie) async {
+    List<Movie> foundMovies = [];
     final failureOrAccepted =
         await _searchMovieUsecase(SearchMovieParam(movie: movie));
 
@@ -83,10 +85,10 @@ class MovieProvider extends ChangeNotifier {
       var searchedMovies = accepted
           .map((movie) => Movie(heroID: 'search-${movie.id}', movieData: movie))
           .toList();
-      return searchedMovies;
+      foundMovies = searchedMovies;
     });
 
-    return [];
+    return foundMovies;
   }
 
   void getSuggestionByQuery(String query) {

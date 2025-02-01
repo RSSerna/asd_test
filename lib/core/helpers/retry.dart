@@ -1,4 +1,4 @@
-class HttpRetry {
+class RetryHelper {
   Future<T> retry<T>({
     required int maxRetries,
     required int delayMilliseconds,

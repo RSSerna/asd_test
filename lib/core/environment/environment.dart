@@ -9,6 +9,7 @@ abstract class AppEnvironment {
   static late Environment _environment;
 
   static Environment get environment => _environment;
+
   static void _setUpVariables(
       {required String vTitle,
       required bool vBanner,
@@ -30,7 +31,7 @@ abstract class AppEnvironment {
               vTitle: "Develop",
               vBanner: true,
               vPort: 8080,
-              url: "https://backend-poker-planning.azurewebsites.net");
+              url: "https://api.themoviedb.org");
           break;
         }
       case Environment.staging:
@@ -39,7 +40,7 @@ abstract class AppEnvironment {
               vTitle: "Staging",
               vBanner: true,
               vPort: 8080,
-              url: "https://backend-poker-planning.azurewebsites.net");
+              url: "https://api.themoviedb.org");
           break;
         }
       case Environment.production:
@@ -48,7 +49,7 @@ abstract class AppEnvironment {
               vTitle: "Production",
               vBanner: false,
               vPort: 8080,
-              url: "https://backend-poker-planning.azurewebsites.net");
+              url: "https://api.themoviedb.org");
           break;
         }
     }

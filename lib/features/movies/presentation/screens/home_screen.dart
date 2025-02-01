@@ -23,17 +23,14 @@ class HomeScreen extends StatelessWidget {
             )
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              //Create a widget for listing the movies
-              ImageSliderWidget(
-                movies: movieProvider.popularMovie,
-                title: 'Populares',
-                onNextPage: () => movieProvider.getPopularMovies(),
-              ),
-            ],
-          ),
+        body: Column(
+          children: [
+            ImageSliderWidget(
+              movies: movieProvider.popularMovie,
+              title: 'Populares',
+              onNextPage: () => movieProvider.getPopularMovies(),
+            ),
+          ],
         ));
   }
 }

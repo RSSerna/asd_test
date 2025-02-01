@@ -1,3 +1,4 @@
+import 'package:asd_test/features/movies/data/datasource/movie_response.dart';
 import 'package:asd_test/features/movies/data/model/credits_response.dart';
 import 'package:asd_test/features/movies/data/model/popular_response.dart';
 
@@ -15,10 +16,10 @@ abstract class MovieRemoteDataSource {
   Future<List<MovieEntity>> searchMovie(SearchMovieParam param);
 }
 
-class CleanRemoteDataSourceImpl implements MovieRemoteDataSource {
+class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
   final CustomHttpClient client;
 
-  CleanRemoteDataSourceImpl({
+  MovieRemoteDataSourceImpl({
     required this.client,
   });
 
@@ -27,16 +28,18 @@ class CleanRemoteDataSourceImpl implements MovieRemoteDataSource {
     final response = await client.get(
         path: API.movieCast.replaceFirst('{{movieId}}', param.id.toString()),
         parameters: {'language': 'es-ES'});
-    return CreditsResponse.fromJson(response.data).cast;
+    return CreditsResponse.fromMap(response.data).cast;
   }
 
   @override
   Future<List<MovieEntity>> getPopularMovies(
       GetPopularMoviesParam param) async {
-    final response = await client.get(
-        path: API.movieCast,
-        parameters: {'language': 'es-ES', 'page': param.page.toString()});
-    return PopularResponse.fromJson(response.data).results;
+    // final response = await client.get(
+    //     path: API.popularMovies,
+    //     parameters: {'language': 'es-ES', 'page': param.page.toString()});
+    // print(response.data);
+    // return PopularResponse.fromMap(response.data).results;
+    return PopularResponse.fromJson(movieResponse).results;
   }
 
   @override
@@ -46,6 +49,6 @@ class CleanRemoteDataSourceImpl implements MovieRemoteDataSource {
       'query': param.movie,
       'page': param.page.toString()
     });
-    return PopularResponse.fromJson(response.data).results;
+    return PopularResponse.fromMap(response.data).results;
   }
 }

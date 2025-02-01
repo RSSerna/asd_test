@@ -38,8 +38,8 @@ class PopularResponse extends Equatable {
     return {
       'page': page,
       'results': results.map((x) => x.toMap()).toList(),
-      'totalPages': totalPages,
-      'totalResults': totalResults,
+      'total_pages': totalPages,
+      'total_results': totalResults,
     };
   }
 
@@ -48,8 +48,8 @@ class PopularResponse extends Equatable {
       page: map['page']?.toInt() ?? 0,
       results: List<MovieEntity>.from(
           map['results']?.map((x) => MovieEntity.fromMap(x))),
-      totalPages: map['totalPages']?.toInt() ?? 0,
-      totalResults: map['totalResults']?.toInt() ?? 0,
+      totalPages: map['total_pages']?.toInt() ?? 0,
+      totalResults: map['total_results']?.toInt() ?? 0,
     );
   }
 
