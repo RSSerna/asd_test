@@ -11,8 +11,14 @@ When clicking on a Movie you will go into Details and you can Add To Favorites
 
 You can also Set up Theme and Language
 
+You will need:
 
+Latest Flutter Version (3.27.3)
 
+Clone the repo.
+Run: 
+flutter pub get
+With that you can run the sample proyect
 
 For generating the Mocks use:
 flutter pub run build_runner build
