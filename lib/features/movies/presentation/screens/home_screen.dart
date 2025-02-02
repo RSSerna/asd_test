@@ -1,4 +1,7 @@
+import 'package:asd_test/core/router/router_paths.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/movies_provider.dart';
@@ -15,6 +18,10 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: const Text('ASD Movies'),
+          leading: IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () => context.push(RouterPaths.language),
+          ),
           actions: [
             IconButton(
               icon: const Icon(Icons.search),
@@ -27,7 +34,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             ImageSliderWidget(
               movies: movieProvider.popularMovie,
-              title: 'Populares',
+              title: AppLocalizations.of(context)?.popular ?? "Popular",
               onNextPage: () => movieProvider.getPopularMovies(),
             ),
           ],

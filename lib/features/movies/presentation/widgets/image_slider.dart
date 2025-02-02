@@ -58,9 +58,12 @@ class _ImageSliderWidgetState extends State<ImageSliderWidget> {
                 // scrollDirection: Axis.horizontal,
                 itemCount: widget.movies.length,
                 itemBuilder: (_, index) {
-                  return _MovieListTile(
-                    title: widget.title,
-                    movie: widget.movies[index],
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: _MovieListTile(
+                      title: widget.title,
+                      movie: widget.movies[index],
+                    ),
                   );
                 },
               ),
@@ -86,14 +89,46 @@ class _MovieListTile extends StatelessWidget {
       onTap: () {
         context.push(RouterPaths.movieInfo, extra: movie);
       },
-      child: Container(
-        margin: EdgeInsets.only(bottom: 10),
-        width: double.infinity,
-        color: Colors.blueGrey,
-        child: LayoutBuilder(builder: (context, constraints) {
-          if (constraints.maxWidth <= 500) {
-            return Column(
-              spacing: 5,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          width: double.infinity,
+          color: Colors.blueGrey,
+          child: LayoutBuilder(builder: (context, constraints) {
+            if (constraints.maxWidth <= 500) {
+              return Column(
+                spacing: 5,
+                children: [
+                  Hero(
+                    tag: movie.heroID,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: FadeInImage(
+                        placeholder: const AssetImage('assets/no-image.jpg'),
+                        image: NetworkImage(movie.movieData.fullImagePoster),
+                        fit: BoxFit.cover,
+                        height: 150,
+                        width: 100,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    movie.movieData.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    movie.movieData.originalTitle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              );
+            }
+            return Row(
+              spacing: 20,
               children: [
                 Hero(
                   tag: movie.heroID,
@@ -108,57 +143,27 @@ class _MovieListTile extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(
-                  movie.movieData.title,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                ),
-                Text(
-                  movie.movieData.originalTitle,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                ),
+                Column(
+                  spacing: 5,
+                  children: [
+                    Text(
+                      movie.movieData.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      movie.movieData.originalTitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                )
               ],
             );
-          }
-          return Row(
-            spacing: 20,
-            children: [
-              Hero(
-                tag: movie.heroID,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: FadeInImage(
-                    placeholder: const AssetImage('assets/no-image.jpg'),
-                    image: NetworkImage(movie.movieData.fullImagePoster),
-                    fit: BoxFit.cover,
-                    height: 150,
-                    width: 100,
-                  ),
-                ),
-              ),
-              Column(
-                spacing: 5,
-                children: [
-                  Text(
-                    movie.movieData.title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    movie.movieData.originalTitle,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              )
-            ],
-          );
-        }),
+          }),
+        ),
       ),
     );
   }

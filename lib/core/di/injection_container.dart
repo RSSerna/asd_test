@@ -1,9 +1,10 @@
+import 'package:asd_test/features/settings/providers/language_provider.dart';
+import 'package:asd_test/features/settings/providers/theme_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../features/language/bloc/language_bloc.dart';
 import '../../features/movies/data/datasource/movie_local_data_source.dart';
 import '../../features/movies/data/datasource/movie_remote_data_source.dart';
 import '../../features/movies/data/repositories/movie_repository_impl.dart';
@@ -31,6 +32,10 @@ class InjectionContainerImpl implements InjectionContainer {
         getMovieCastUsecase: sl(),
         getPopularMoviesUseCase: sl(),
         searchMovieUsecase: sl()));
+    //Theme
+    sl.registerFactory(() => ThemeProvider(prefs: sl()));
+    //Language
+    sl.registerFactory(() => LanguageProvider(prefs: sl()));
   }
 
   @override
@@ -61,7 +66,7 @@ class InjectionContainerImpl implements InjectionContainer {
 
     ///Language
     //Bloc
-    sl.registerFactory(LanguageBloc.new);
+    // sl.registerFactory(LanguageBloc.new);
 
     ///Core
     sl.registerLazySingleton<SecureStorage>(() => SecureStorageImpl(sl()));

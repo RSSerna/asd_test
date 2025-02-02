@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/theme/app_theme.dart';
 import '../../domain/entities/cast_entity.dart';
 import '../../domain/entities/movie.dart';
 import '../providers/movies_provider.dart';
@@ -235,7 +234,6 @@ class _CustomSliverAB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      backgroundColor: AppTheme.lightColorScheme.secondary,
       expandedHeight: 200,
       floating: false,
       pinned: true,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../features/language/screen/languege_screen.dart';
 import '../../features/movies/domain/entities/movie.dart';
 import '../../features/movies/presentation/screens/movies_screens.dart';
+import '../../features/settings/screen/settings_screen.dart';
 import 'router_paths.dart';
 
 final router = GoRouter(
