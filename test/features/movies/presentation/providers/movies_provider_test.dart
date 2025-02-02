@@ -1,6 +1,8 @@
 import 'package:asd_test/features/movies/domain/entities/cast_entity.dart';
 import 'package:asd_test/features/movies/domain/entities/movie.dart';
 import 'package:asd_test/features/movies/domain/entities/movie_entity.dart';
+import 'package:asd_test/features/movies/domain/usecase/add_remove_fav_usecase.dart';
+import 'package:asd_test/features/movies/domain/usecase/get_favs_usecase.dart';
 import 'package:asd_test/features/movies/domain/usecase/get_movie_cast_usecase.dart';
 import 'package:asd_test/features/movies/domain/usecase/get_popular_movies_usecase.dart';
 import 'package:asd_test/features/movies/domain/usecase/search_movie_usecase.dart';
@@ -12,12 +14,19 @@ import 'package:mockito/mockito.dart';
 
 import 'movies_provider_test.mocks.dart';
 
-@GenerateMocks(
-    [GetMovieCastUsecase, GetPopularMoviesUseCase, SearchMovieUsecase])
+@GenerateMocks([
+  GetMovieCastUsecase,
+  GetPopularMoviesUseCase,
+  SearchMovieUsecase,
+  GetFavsUsecase,
+  AddRemoveFavUsecase
+])
 void main() {
   late MockGetMovieCastUsecase mockGetMovieCastUsecase;
   late MockGetPopularMoviesUseCase mockGetPopularMoviesUseCase;
   late MockSearchMovieUsecase mockSearchMovieUsecase;
+  late MockGetFavsUsecase mockGetFavsUsecase;
+  late MockAddRemoveFavUsecase mockAddRemoveFavUsecase;
   late MovieProvider movieProvider;
 
   const movie1 = MovieEntity(
@@ -103,11 +112,15 @@ void main() {
     mockGetMovieCastUsecase = MockGetMovieCastUsecase();
     mockGetPopularMoviesUseCase = MockGetPopularMoviesUseCase();
     mockSearchMovieUsecase = MockSearchMovieUsecase();
+    mockGetFavsUsecase = MockGetFavsUsecase();
+    mockAddRemoveFavUsecase = MockAddRemoveFavUsecase();
 
     movieProvider = MovieProvider(
       getMovieCastUsecase: mockGetMovieCastUsecase,
       getPopularMoviesUseCase: mockGetPopularMoviesUseCase,
       searchMovieUsecase: mockSearchMovieUsecase,
+      getFavsUseCase: mockGetFavsUsecase,
+      addRemoveFavUsecase: mockAddRemoveFavUsecase,
     );
   });
 

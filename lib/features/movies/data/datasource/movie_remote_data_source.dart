@@ -7,7 +7,6 @@ import '../../domain/entities/movie_entity.dart';
 import '../../domain/entities/search_movie_param.dart';
 import '../model/credits_response.dart';
 import '../model/popular_response.dart';
-import 'movie_response.dart';
 
 abstract class MovieRemoteDataSource {
   Future<List<MovieEntity>> getPopularMovies(GetPopularMoviesParam param);
@@ -33,12 +32,10 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
   @override
   Future<List<MovieEntity>> getPopularMovies(
       GetPopularMoviesParam param) async {
-    // final response = await client.get(
-    //     path: API.popularMovies,
-    //     parameters: {'language': 'es-ES', 'page': param.page.toString()});
-    // print(response.data);
-    // return PopularResponse.fromMap(response.data).results;
-    return PopularResponse.fromJson(movieResponse).results;
+    final response = await client.get(
+        path: API.popularMovies,
+        parameters: {'language': 'es-ES', 'page': param.page.toString()});
+    return PopularResponse.fromMap(response.data).results;
   }
 
   @override

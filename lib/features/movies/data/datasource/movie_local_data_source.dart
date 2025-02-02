@@ -1,32 +1,42 @@
-import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/constants/constants.dart';
 import '../../../../core/secure_storage/secure_storage.dart';
+import '../../domain/entities/add_remove_fav_param.dart';
 
 abstract class MovieLocalDataSource {
-  Future<String> getEmailFromToken();
-  Future<String> getSecuredUserEmail();
+  Future<List<String>> addRemoveFav(AddRemoveFavParam param);
+  Future<List<String>> getFavs();
 }
 
 class MovieLocalDataSourceImpl implements MovieLocalDataSource {
   final SecureStorage secureStorage;
+  final SharedPreferences sharedPreferences;
 
   MovieLocalDataSourceImpl({
     required this.secureStorage,
+    required this.sharedPreferences,
   });
 
   @override
-  Future<String> getEmailFromToken() async {
-    final token = await secureStorage.read(key: Constants.apiToken);
-    return Future.value(decodeEmailFromToken(token));
+  Future<List<String>> addRemoveFav(AddRemoveFavParam param) async {
+    List<String>? favs = sharedPreferences.getStringList(Constants.favs);
+    if (favs == null) {
+      favs = [param.id.toString()];
+      await sharedPreferences.setStringList(Constants.favs, favs);
+    } else {
+      if (favs.contains(param.id.toString())) {
+        favs.remove(param.id.toString());
+      } else {
+        favs.add(param.id.toString());
+      }
+      await sharedPreferences.setStringList(Constants.favs, favs);
+    }
+    return favs;
   }
 
   @override
-  Future<String> getSecuredUserEmail() async =>
-      await secureStorage.read(key: Constants.apiToken);
-
-  static String decodeEmailFromToken(String token) {
-    var decodedToken = JwtDecoder.decode(token);
-    return decodedToken['email'];
+  Future<List<String>> getFavs() async {
+    return sharedPreferences.getStringList(Constants.favs) ?? <String>[];
   }
 }

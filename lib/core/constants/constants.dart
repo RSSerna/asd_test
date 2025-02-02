@@ -8,6 +8,7 @@ class Constants {
   //Shared Preferences keys
   static const String theme = 'theme';
   static const String language = 'language';
+  static const String favs = 'favs';
 
   //Shared Preferences
   static const String lightTheme = 'lightTheme';

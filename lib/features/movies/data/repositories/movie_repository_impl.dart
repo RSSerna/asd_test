@@ -2,6 +2,8 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/http/custom_http_exception.dart';
+import '../../../../core/usecase/usecase.dart';
+import '../../domain/entities/add_remove_fav_param.dart';
 import '../../domain/entities/cast_entity.dart';
 import '../../domain/entities/get_movie_cast_param.dart';
 import '../../domain/entities/get_popular_movie_param.dart';
@@ -57,5 +59,25 @@ class MovieRepositoryImpl implements MovieRepository {
   Future<Either<Failure, List<MovieEntity>>> searchMovie(
       SearchMovieParam param) async {
     return _safeApiCall(() => movieRemoteDataSource.searchMovie(param));
+  }
+
+  @override
+  Future<Either<Failure, List<String>>> addRemoveFav(
+      AddRemoveFavParam param) async {
+    try {
+      var favs = await cleanLocalDataSource.addRemoveFav(param);
+      return Future.value(Right(favs));
+    } catch (e) {
+      return Future.value(Left(CacheFailure())); // More user-friendly message
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<String>>> getFavs(NoParams param) async {
+    try {
+      return Future.value(Right(await cleanLocalDataSource.getFavs()));
+    } catch (e) {
+      return Future.value(Left(CacheFailure())); // More user-friendly message
+    }
   }
 }

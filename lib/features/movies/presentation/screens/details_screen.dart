@@ -108,12 +108,26 @@ class _MovieOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final movieProvider = Provider.of<MovieProvider>(context);
+    bool isFav = movieProvider.isFav(movie.movieData.id);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-      child: Text(
-        movie.movieData.overview,
-        textAlign: TextAlign.justify,
-        style: Theme.of(context).textTheme.bodyMedium,
+      child: Column(
+        children: [
+          IconButton(
+            onPressed: () {
+              movieProvider.addRemoveFav(movie.movieData.id);
+            },
+            icon: Icon(isFav ? Icons.star : Icons.star_border),
+            iconSize: 30,
+            color: Colors.amber,
+          ),
+          Text(
+            movie.movieData.overview,
+            textAlign: TextAlign.justify,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ],
       ),
     );
   }

@@ -7,6 +7,8 @@ import '../../features/movies/data/datasource/movie_local_data_source.dart';
 import '../../features/movies/data/datasource/movie_remote_data_source.dart';
 import '../../features/movies/data/repositories/movie_repository_impl.dart';
 import '../../features/movies/domain/repositories/movie_repository.dart';
+import '../../features/movies/domain/usecase/add_remove_fav_usecase.dart';
+import '../../features/movies/domain/usecase/get_favs_usecase.dart';
 import '../../features/movies/domain/usecase/get_movie_cast_usecase.dart';
 import '../../features/movies/domain/usecase/get_popular_movies_usecase.dart';
 import '../../features/movies/domain/usecase/search_movie_usecase.dart';
@@ -31,7 +33,9 @@ class InjectionContainerImpl implements InjectionContainer {
     sl.registerFactory(() => MovieProvider(
         getMovieCastUsecase: sl(),
         getPopularMoviesUseCase: sl(),
-        searchMovieUsecase: sl()));
+        searchMovieUsecase: sl(),
+        getFavsUseCase: sl(),
+        addRemoveFavUsecase: sl()));
     //Theme
     sl.registerFactory(() => ThemeProvider(prefs: sl()));
     //Language
@@ -49,6 +53,8 @@ class InjectionContainerImpl implements InjectionContainer {
     sl.registerLazySingleton(() => GetPopularMoviesUseCase(repository: sl()));
     sl.registerLazySingleton(() => GetMovieCastUsecase(repository: sl()));
     sl.registerLazySingleton(() => SearchMovieUsecase(repository: sl()));
+    sl.registerLazySingleton(() => GetFavsUsecase(repository: sl()));
+    sl.registerLazySingleton(() => AddRemoveFavUsecase(repository: sl()));
 
     //Repository
     sl.registerLazySingleton<MovieRepository>(
@@ -61,7 +67,8 @@ class InjectionContainerImpl implements InjectionContainer {
       () => MovieRemoteDataSourceImpl(client: sl()),
     );
     sl.registerLazySingleton<MovieLocalDataSource>(
-      () => MovieLocalDataSourceImpl(secureStorage: sl()),
+      () => MovieLocalDataSourceImpl(
+          secureStorage: sl(), sharedPreferences: sl()),
     );
 
     ///Language

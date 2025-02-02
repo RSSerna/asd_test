@@ -6,6 +6,9 @@
 import 'dart:async' as _i5;
 
 import 'package:asd_test/core/errors/failures.dart' as _i6;
+import 'package:asd_test/core/usecase/usecase.dart' as _i15;
+import 'package:asd_test/features/movies/domain/entities/add_remove_fav_param.dart'
+    as _i17;
 import 'package:asd_test/features/movies/domain/entities/cast_entity.dart'
     as _i7;
 import 'package:asd_test/features/movies/domain/entities/get_movie_cast_param.dart'
@@ -18,6 +21,10 @@ import 'package:asd_test/features/movies/domain/entities/search_movie_param.dart
     as _i13;
 import 'package:asd_test/features/movies/domain/repositories/movie_repository.dart'
     as _i2;
+import 'package:asd_test/features/movies/domain/usecase/add_remove_fav_usecase.dart'
+    as _i16;
+import 'package:asd_test/features/movies/domain/usecase/get_favs_usecase.dart'
+    as _i14;
 import 'package:asd_test/features/movies/domain/usecase/get_movie_cast_usecase.dart'
     as _i4;
 import 'package:asd_test/features/movies/domain/usecase/get_popular_movies_usecase.dart'
@@ -163,4 +170,77 @@ class MockSearchMovieUsecase extends _i1.Mock
             ),
           )
           as _i5.Future<_i3.Either<_i6.Failure, List<_i10.MovieEntity>>>);
+}
+
+/// A class which mocks [GetFavsUsecase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetFavsUsecase extends _i1.Mock implements _i14.GetFavsUsecase {
+  MockGetFavsUsecase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.MovieRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeMovieRepository_0(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i2.MovieRepository);
+
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, List<String>>> call(
+    _i15.NoParams? params,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [params]),
+            returnValue:
+                _i5.Future<_i3.Either<_i6.Failure, List<String>>>.value(
+                  _FakeEither_1<_i6.Failure, List<String>>(
+                    this,
+                    Invocation.method(#call, [params]),
+                  ),
+                ),
+          )
+          as _i5.Future<_i3.Either<_i6.Failure, List<String>>>);
+}
+
+/// A class which mocks [AddRemoveFavUsecase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAddRemoveFavUsecase extends _i1.Mock
+    implements _i16.AddRemoveFavUsecase {
+  MockAddRemoveFavUsecase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i2.MovieRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeMovieRepository_0(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i2.MovieRepository);
+
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, List<String>>> call(
+    _i17.AddRemoveFavParam? params,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [params]),
+            returnValue:
+                _i5.Future<_i3.Either<_i6.Failure, List<String>>>.value(
+                  _FakeEither_1<_i6.Failure, List<String>>(
+                    this,
+                    Invocation.method(#call, [params]),
+                  ),
+                ),
+          )
+          as _i5.Future<_i3.Either<_i6.Failure, List<String>>>);
 }
