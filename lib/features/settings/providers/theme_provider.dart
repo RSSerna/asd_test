@@ -1,7 +1,8 @@
-import 'package:asd_test/core/constants/constants.dart';
-import 'package:asd_test/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../core/constants/constants.dart';
+import '../../../core/theme/app_theme.dart';
 
 class ThemeProvider extends ChangeNotifier {
   AppThemeType _currentTheme = AppThemeType.light;

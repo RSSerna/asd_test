@@ -1,10 +1,10 @@
-import 'package:asd_test/features/settings/providers/language_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/l10n/l10n.dart';
 import '../../../core/theme/app_theme.dart';
+import '../providers/language_provider.dart';
 import '../providers/theme_provider.dart';
 
 class LanguageScreen extends StatelessWidget {

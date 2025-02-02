@@ -1,8 +1,9 @@
 import 'dart:io';
 
-import 'package:asd_test/core/constants/api.dart';
-import 'package:asd_test/core/http/custom_http_exception.dart';
 import 'package:dio/dio.dart';
+
+import '../constants/api.dart';
+import 'custom_http_exception.dart';
 
 class DioClientMix with DioMixin implements Dio {
   Dio client;

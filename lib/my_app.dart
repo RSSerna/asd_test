@@ -1,5 +1,3 @@
-import 'package:asd_test/features/settings/providers/language_provider.dart';
-import 'package:asd_test/features/settings/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -10,6 +8,8 @@ import 'core/l10n/l10n.dart';
 import 'core/router/app_routes.dart';
 import 'core/theme/app_theme.dart';
 import 'features/movies/presentation/providers/movies_provider.dart';
+import 'features/settings/providers/language_provider.dart';
+import 'features/settings/providers/theme_provider.dart';
 
 class AppState extends StatelessWidget {
   final InjectionContainerImpl injectionContainerImpl;

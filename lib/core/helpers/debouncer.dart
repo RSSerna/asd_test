@@ -1,6 +1,4 @@
 import 'dart:async';
-// Creditos
-// https://stackoverflow.com/a/52922130/7834829
 
 class Debouncer<T> {
   Debouncer({required this.duration, this.onValue});
@@ -18,5 +16,9 @@ class Debouncer<T> {
     _value = val;
     _timer?.cancel();
     _timer = Timer(duration, () => onValue!(_value as T));
+  }
+
+  void dispose() {
+    _timer?.cancel();
   }
 }

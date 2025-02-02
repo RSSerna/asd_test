@@ -1,4 +1,4 @@
-import 'package:asd_test/core/constants/api.dart';
+import '../constants/api.dart';
 
 enum Environment { develop, production, staging }
 

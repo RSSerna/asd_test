@@ -1,9 +1,9 @@
-import 'package:asd_test/core/router/router_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/router/router_paths.dart';
 import '../providers/movies_provider.dart';
 import '../widgets/image_slider.dart';
 import '../widgets/search_delegate.dart';

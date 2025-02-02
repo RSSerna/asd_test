@@ -46,7 +46,7 @@ class MovieProvider extends ChangeNotifier {
 
   Stream<List<Movie>> get suggestionStream => _suggestionStremController.stream;
 
-  void getPopularMovies() async {
+  Future getPopularMovies() async {
     _popularPage++;
     final failureOrAccepted = await _getPopularMoviesUseCase(
         GetPopularMoviesParam(page: _popularPage));

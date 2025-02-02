@@ -1,7 +1,8 @@
-import 'package:asd_test/core/di/injection_container.dart';
-import 'package:asd_test/core/environment/environment.dart';
-import 'package:asd_test/my_app.dart';
 import 'package:flutter/material.dart';
+
+import 'core/di/injection_container.dart';
+import 'core/environment/environment.dart';
+import 'my_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

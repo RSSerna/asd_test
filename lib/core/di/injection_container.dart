@@ -1,5 +1,3 @@
-import 'package:asd_test/features/settings/providers/language_provider.dart';
-import 'package:asd_test/features/settings/providers/theme_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -13,6 +11,8 @@ import '../../features/movies/domain/usecase/get_movie_cast_usecase.dart';
 import '../../features/movies/domain/usecase/get_popular_movies_usecase.dart';
 import '../../features/movies/domain/usecase/search_movie_usecase.dart';
 import '../../features/movies/presentation/providers/movies_provider.dart';
+import '../../features/settings/providers/language_provider.dart';
+import '../../features/settings/providers/theme_provider.dart';
 import '../http/custom_http_client.dart';
 import '../http/dio_client_mix.dart';
 import '../interceptors/interceptor_manager.dart';

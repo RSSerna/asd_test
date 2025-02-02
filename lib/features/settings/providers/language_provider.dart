@@ -1,7 +1,7 @@
-import 'package:asd_test/core/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../core/constants/constants.dart';
 import '../../../core/l10n/l10n.dart';
 
 class LanguageProvider extends ChangeNotifier {

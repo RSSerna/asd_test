@@ -1,4 +1,4 @@
-import 'package:asd_test/features/movies/domain/entities/movie_entity.dart';
+import 'movie_entity.dart';
 
 class Movie {
   final MovieEntity movieData;
