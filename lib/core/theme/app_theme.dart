@@ -25,7 +25,6 @@ class AppTheme {
       backgroundColor: Colors.blue, //Example appbar color
       foregroundColor: Colors.white, // Example text color
     ),
-    // ... other light theme properties (e.g., text styles, button styles)
   );
 
   static final ThemeData darkTheme = ThemeData(
@@ -35,6 +34,5 @@ class AppTheme {
       backgroundColor: Colors.deepPurple, //Example appbar color
       foregroundColor: Colors.white, // Example text color
     ),
-    // ... other dark theme properties
   );
 }

@@ -26,7 +26,7 @@ class ThemeProvider extends ChangeNotifier {
       _currentTheme = themeName == Constants.darkTheme
           ? AppThemeType.dark
           : AppThemeType.light;
-      print("TEMA: $_currentTheme");
+      debugPrint("Theme: $_currentTheme");
       notifyListeners();
     }
   }
